@@ -380,6 +380,7 @@ void Slave::initialize()
   info.mutable_attributes()->CopyFrom(attributes);
   // Checkpointing of slaves is always enabled.
   info.set_checkpoint(true);
+  info.set_executor_signal_escalation_timeout(stringify(flags.executor_signal_escalation_timeout));
 
   LOG(INFO) << "Slave hostname: " << info.hostname();
   // Checkpointing of slaves is always enabled.
