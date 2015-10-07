@@ -366,6 +366,7 @@ message SlaveInfo {
   // TODO(joerg84): Remove checkpoint field as with 0.22.0
   // slave checkpointing is enabled for all slaves (MESOS-2317).
   optional bool checkpoint = 7 [default = false];
+  optional string executor_signal_escalation_timeout = 9;
 }
 
 

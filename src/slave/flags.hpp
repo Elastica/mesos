@@ -59,6 +59,7 @@ public:
   Option<JSON::Object> executor_environment_variables;
   Duration executor_registration_timeout;
   Duration executor_shutdown_grace_period;
+  Duration executor_signal_escalation_timeout;
   Duration gc_delay;
   double gc_disk_headroom;
   Duration disk_watch_interval;

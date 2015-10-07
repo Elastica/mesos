@@ -97,6 +97,7 @@ public:
   {
     cout << "Registered executor on " << slaveInfo.hostname() << endl;
     driver = _driver;
+    setEscalationTimeout(slaveInfo);
   }
 
   void reregistered(
@@ -104,6 +105,17 @@ public:
       const SlaveInfo& slaveInfo)
   {
     cout << "Re-registered executor on " << slaveInfo.hostname() << endl;
+    setEscalationTimeout(slaveInfo);
+  }
+
+  void setEscalationTimeout(const SlaveInfo& slaveInfo){
+    // override with slave configuration
+    const string& timeout = slaveInfo.executor_signal_escalation_timeout();
+    Try<Duration> duration = Duration::parse(timeout);
+    if (duration.isSome()){
+      escalationTimeout = duration.get();
+    }
+    // future: override with task level configuration
   }
 
   void disconnected(ExecutorDriver* driver) {}

@@ -166,6 +166,13 @@ mesos::internal::slave::Flags::Flags()
       "to shut down (e.g., 60secs, 3mins, etc)",
       EXECUTOR_SHUTDOWN_GRACE_PERIOD);
 
+  add(&Flags::executor_signal_escalation_timeout,
+      "executor_signal_escalation_timeout",
+      "Amount of time to wait for an executor\n"
+      "to shut down a task before considering it hung and\n"
+      "sending KILL signal (e.g., 60secs, 3mins, etc)",
+      EXECUTOR_SIGNAL_ESCALATION_TIMEOUT);
+
   add(&Flags::gc_delay,
       "gc_delay",
       "Maximum amount of time to wait before cleaning up\n"
