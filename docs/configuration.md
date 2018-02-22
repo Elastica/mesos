@@ -162,6 +162,26 @@ If you have special compilation requirements, please refer to `./configure --hel
         Explanation
       </th>
   </thead>
+   <tr>
+     <td>
+      --advertise_ip=VALUE
+    </td>
+    <td>
+      IP address advertised to reach mesos master/slave. Mesos master/slave
+      does not bind using this IP address. However, this IP address may be
+      used to access Mesos master/slave.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      --advertise_port=VALUE
+    </td>
+    <td>
+      Port advertised to reach mesos master/slave (alongwith advertise_ip).
+      Mesos master/slave does not bind using this port. However, this port
+      (alongwith advertise_ip) may be used to access Mesos master/slave.
+    </td>
+  </tr>
   <tr>
     <td>
       --quorum=VALUE
