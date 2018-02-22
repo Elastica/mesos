@@ -853,11 +853,12 @@ void initialize(const string& delegate)
   // Check environment for port.
   value = os::getenv("LIBPROCESS_PORT");
   if (value.isSome()) {
-    const int result = atoi(value.get().c_str());
-    if (result < 0 || result > USHRT_MAX) {
+    Try<int> result = numify<int>(value.get().c_str());
+    if (result.isSome() && result.get() >=0 && result.get() <= USHRT_MAX) {
+        __address__.port = result.get();
+    } else {
       LOG(FATAL) << "LIBPROCESS_PORT=" << value.get() << " is not a valid port";
     }
-    __address__.port = result;
   }
 
   // Create a "server" socket for communicating.
@@ -879,6 +880,28 @@ void initialize(const string& delegate)
   }
 
   __address__ = bind.get();
+
+  // If advertised IP and port are present, use them instead.
+  value = os::getenv("LIBPROCESS_ADVERTISE_IP");
+  if (value.isSome()) {
+    Try<net::IP> ip = net::IP::parse(value.get(), AF_INET);
+    if (ip.isError()) {
+      LOG(FATAL) << "Parsing LIBPROCESS_ADVERTISE_IP=" << value.get()
+                 << " failed: " << ip.error();
+    }
+    __address__.ip = ip.get();
+  }
+
+  value = os::getenv("LIBPROCESS_ADVERTISE_PORT");
+  if (value.isSome()) {
+    Try<int> result = numify<int>(value.get().c_str());
+    if (result.isSome() && result.get() >=0 && result.get() <= USHRT_MAX) {
+      __address__.port = result.get();
+    } else {
+      LOG(FATAL) << "LIBPROCESS_ADVERTISE_PORT=" << value.get()
+                 << " is not a valid port";
+    }
+  }
 
   // Lookup hostname if missing ip or if ip is 0.0.0.0 in case we
   // actually have a valid external ip address. Note that we need only
